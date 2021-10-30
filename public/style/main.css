@@ -1,0 +1,542 @@
+.poster_list {
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+}
+
+.poster_list_x {
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem;
+    width: 22.5rem;
+    height: 32.85rem;
+}
+
+.link-serie-miniature {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background-color: #333;
+}
+
+.b-sizing-b-box {
+    box-sizing: border-box;
+}
+
+.margin-auto {
+    margin: auto
+}
+
+.container-s-min {
+    width: 15rem;
+    height: 21.9rem;
+    position: relative;
+}
+
+.cent-pour-cent-taille {
+    width: 100%;
+    height: 100%;
+}
+
+.overlay-min {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
+    background: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+}
+
+.overlay-min-hover {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0);
+    transition: all 0.5s ease-in-out;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.overlay-min-hover * {
+    display: none;
+}
+
+.overlay-min-note {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 15%;
+    border-bottom-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    background: rgba(0, 0, 0, 0.85);
+    text-decoration: none;
+    transition: all 0.5s ease-in-out;
+}
+
+.overlay-min-date {
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    width: 35%;
+    height: 8%;
+    border-top-left-radius: 0.4rem;
+    border-top-right-radius: 0.4rem;
+    background: rgba(255, 115, 0, 0.85);
+    text-decoration: none;
+    margin-left: 33%;
+    transition: all 0.5s ease-in-out;
+}
+
+.div-s-min-date {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: auto;
+}
+
+.text-date-s {
+    margin-top: 0.2rem;
+    color: black;
+    font-weight: bold;
+}
+
+.container-s-min:hover .overlay-min-hover {
+    display: block; 
+    background: rgba(0, 0, 0, 0.75);
+    transition: all 0.5s ease-in-out;
+}
+
+.container-s-min:hover .overlay-min-hover * {
+    display: block; 
+}
+
+.container-s-min:hover .overlay-min{
+    display: none; 
+    transition: all 0.5s ease-in-out;
+}
+
+.container-s-min:hover .overlay-min-note{
+    display: none; 
+    transition: all 0.5s ease-in-out;
+}
+
+.container-s-min:hover .overlay-min-date {
+    display: none; 
+    transition: all 0.5s ease-in-out;
+}
+
+.link-s-min {
+    text-decoration: none;
+}
+
+.centrer-horrizontal {
+    margin: auto;
+}
+
+.div-s-min {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.s-min-title {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.s-min-infs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-around;
+    align-items: center !important;
+}
+
+.container-s-min:hover .s-min-infs {
+    border-bottom: 1px solid orange;
+}
+
+.s-min-genres {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-right-radius: 0.4rem;
+    border-bottom-left-radius: 0.4rem;
+}
+
+.pos-relative {
+    position: relative !important;
+}
+
+.genre-pills {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    width: 100%;
+}
+
+.genre-pills > * {
+    margin: 0.2rem auto;
+}
+
+.text-titre-genre {
+    font-weight: bold;
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.text-nb-genre {
+    color: #fff;
+}
+
+/* show */
+
+.show-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+}
+
+.trailer-margin {
+    margin: 6rem auto;
+}
+
+.show-row-2 {
+    margin-top: 2rem;
+}
+
+.episode-flex {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.no-style-a{
+    text-decoration: none;
+}
+
+.alinea {
+    margin: 0 0 0 3rem;
+}
+
+.no-margin-padding {
+    margin: 0;
+    padding: 0;
+}
+
+.margin-b {
+    margin-bottom: 1rem;
+}
+
+.margin-b-g {
+    margin-bottom: 3rem;
+    margin-top: 3rem;
+}
+
+.margin-r {
+    margin-right: 0.6rem;
+}
+
+.p-bold {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.flex-box-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-center-pills {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.flex-genre-center {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.margin-pills {
+    margin: 0.3rem;
+}
+
+.titre-ajout-serie {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.margin-t-c {
+    margin-top: 8rem;
+}
+
+.width-com {
+    width: 20rem;
+}
+
+.com-nom-u {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.com-divider-u {
+    font-weight: bold;
+}
+
+.com-date-u {
+    font-style: italic;
+}
+
+.commentaire-container .form-note-flex {
+    display: flex
+}
+
+.commentaire-container .form-note-flex #rating_note {
+    display: flex;
+}
+
+.commentaire-container .form-check {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.commentaire-container .form-check input {
+    position: relative;
+    margin-left: 0;
+}
+
+.overlay-note-titre-s {
+    position: absolute;
+    bottom: -4.5rem;
+    left: 50%;
+    width: 15rem;
+    height: 4.5rem;
+    margin-left: -7.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    background: #282828;
+}
+
+.note-titre-s {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+
+.c-note-titre-s {
+    display: flex;
+    width: 100%;
+}
+
+.bbox-note-titre-s {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+}
+
+.margin-all-eq {
+    margin: auto 0.3rem;
+}
+
+.note-titre-note {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #f80;
+}
+
+.note-titre-src {
+    font-weight: bold;
+    color: #f80;
+}
+
+.note-titre-value {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.margin-top-5 {
+    margin-top: 5rem;
+}
+
+.margin-bottom-minia {
+    margin-bottom: 3rem;
+}
+
+.overlay-min-suivre {
+    position: absolute;
+    bottom: -2.5rem;
+    left: 50%;
+    width: 5;
+    height: 2rem;
+    margin-left: -3.5rem;
+    border-radius: 10rem;
+}
+
+.overlay-min-suivre-suivre {
+    position: absolute;
+    bottom: -2.5rem;
+    left: 50%;
+    width: 5;
+    height: 2rem;
+    margin-left: -2rem;
+    border-radius: 10rem;
+}
+
+.m-com-t {
+    margin: 4.5rem auto 0 auto;
+    padding: 0;
+}
+
+.m-com-a {
+    margin: 0 auto 4.5rem auto;
+    padding: 0;
+}
+
+/* Mes Notations */
+
+.poster_list_comment {
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.5rem;
+    width: 100%;
+    height: 100%;
+}
+
+.div-spe-nop {
+    padding: 0.3rem;
+}
+
+.p-rel-fr {
+    position: relative;
+}
+
+.center-the-p-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.taille-img-p {
+    width: 12.5rem;
+    height: 18.25rem;
+}
+
+.small-saison-note {
+    font-size: 0.8rem;
+}
+
+/* mes-episodes-vu */
+
+.fbbox-epvu-container {
+    flex-direction: column;
+    align-items: center;
+}
+
+.infos-epi-saisons {
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    width: 15rem;
+}
+
+.no-bd-rad {
+    border-bottom-left-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;
+}
+
+.padding-zero {
+    padding: 0 !important;
+}
+
+.bcard-t-n {
+    border-top-right-radius: 0rem !important;
+    border-top-left-radius: 0rem !important;
+}
+
+.ul-s-mp-zero {
+    margin: 0;
+    padding: 0;
+}
+
+.fs-p-epi-card {
+    font-size: 0.7rem;
+}
+
+.alinea-2 {
+    margin-left: 0.7rem !important;
+}
+
+.btn-mnv-manager {
+    width: 5rem;
+    font-size: 0.7rem;
+    padding: 0.05rem;
+}
+
+.margin-b-new {
+    margin-bottom: 0.4rem;
+}
+
+.cbdy-p-z {
+    padding: 0 !important;
+}
+
+.couleur-d-s {
+    background: #717171;
+}
+
+.color-red-admin {
+    color: red !important; 
+}
+
+/* a-propos */
+
+.prenom-style {
+    color: #f80;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.margin-auto {
+    margin: auto;
+}

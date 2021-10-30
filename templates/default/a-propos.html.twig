@@ -1,0 +1,334 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		table {
+			border-spacing: 0;
+			border-collapse: collapse;
+		}
+		td,
+		th {
+			border-bottom: 1px solid #333;
+			padding: 5px;
+		}
+        td{
+        }
+        td p{
+          color: secondary;
+          font-size: 10px;
+        text-shadow: none ;
+        }
+		table tr:nth-child(odd) {
+            background: #474747;
+		}
+        table tr:nth-child(even) {
+            background: #7B7B7B;
+		}
+		thead th{
+			color: white;
+			font-size: 100%;
+		}
+		th {
+			font-weight: normal;
+			text-align: left;
+		}
+		tbody td {
+			text-align: center;
+			font-size: 24px;
+			text-shadow: 1px 1px 1px secondary;
+		}
+        .marge-bas {
+            margin-bottom: 3rem;
+        }
+        .titre-tableau {
+            color: #f80;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        td, th {
+            border-left: 1px solid #000;
+        }
+        .texte-tableau {
+            font-size: 1rem;
+            text-justify: newspaper;
+        }
+        .tab-commentaire {
+            width: 30rem;
+        }
+        .tab-fonctionnalite {
+            width: 30rem;
+        }
+        .violet-t {
+            color: #14DE11;
+        }
+        td > a {
+            margin-bottom: 0.5rem;
+        }
+	</style>
+{% endblock %}
+
+{% block title %}A Propos{% endblock %}
+
+{% block body %}
+ <div class="jumbotron text-center text-white">
+	<h1>A Propos</h1>
+	<h5 class = "display 4">Groupe : S3C'</h5>
+    <h6 class = "display 4"><span class="prenom-style">AUDEBERT Alex</span> - <span class="prenom-style">BERLAND Thibault</span></h6>
+</div>
+
+<div class="container text-center flex-box-page m-com-a">
+		<h5>*Les fonctionnalité en plus non demandées sont écrites en <span class="violet-t">vert</span></h5>
+	</div>
+
+    <div class="container">
+        <table class="marge-bas">
+            <thead>
+                <tr class="text-center">
+                    <th class="text-center titre-tableau tab-fonctionnalite" width="500px">Fonctionnalité</th>
+                    <th class="text-center titre-tableau">Pas&nbsp;abordée</th>
+                    <th class="text-center titre-tableau">Pas&nbsp;terminée</th>
+                    <th class="text-center titre-tableau">Fonctionnelle</th>
+                    <th class="text-center titre-tableau tab-commentaire">Commentaire</th>
+                    <th class="text-center titre-tableau">Lien vers la fonctionnalité</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="">
+                    <th>Une page d'accueil présentant le site</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Présentation du site +</p>
+                        <p class="texte-tableau">Si on n'est pas connecté bouton: de connexion et d'inscription</p>
+                        <p class="texte-tableau">Si on est connecté: bouton vers "mes retours", "mes séries", "mes episodes" </p>
+                    </td>
+                    <td><a class="btn btn-success" href="{{ path('home') }}">Page d'accueil</a></td>
+                </tr>
+                <tr class="">
+                    <th>Un menu facilitant la navigation dans le site</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Boutons visible tout le temps: Accueil, Séries, A propos</p>
+                        <p class="texte-tableau">Boutons visible quand on est pas connecté: Connexion, Inscription</p>
+                        <p class="texte-tableau">Boutons visible quand on est connecté: Dropdown avec son nom composé de 4 boutons (Mes séries, Mes épisodes vu, mes retours, déconnexion)</p>
+                        <p class="texte-tableau">Boutons visible quand on est connecté en ADMIN: DropdownAdmin composé de 2 boutons (Ajouter une série, Modérer les commentaires)</p>
+                    </td>
+                    <td><a href="{{ path('a-propos') }}" class="btn btn-success">En haut de la page<a></td>
+                </tr>
+                <tr class="">
+                    <th>Une page "à propos", décrivant le travail réalisé et précisant
+                        la liste des auteurs du site (le binôme), et éventuellement les
+                        difficultés rencontrées (ainsi que ce tableau)</th>
+                    <td></th>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Bien réalisée</p>
+                    </td>
+                    <td><a href="{{ path('a-propos') }}" class="btn btn-success">Ici même<a></td>
+                </tr>
+                <tr class="">
+                    <th>Une page présentant l'ensemble des séries de la base de
+                        données, l'affichage doit être paginé et il doit être possible de
+                        rechercher des séries</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Liste des séries, Pagination réalisée, Possibilité de rechercher des séries</p>
+                        <p class="texte-tableau violet-t">Possibilité de rechercher les séries qui commence par, finissent par, ou contiennent un mot</p>
+                        <p class="texte-tableau violet-t">Possibilité de classer les séries par titre dans l'ordre alphabétique ou inversement et par date de sortie la plus récente et inversement</p>
+                        <p class="texte-tableau violet-t">Possibilité d'afficher les séries qui contiennent seulement un genre particulié (ex: Action)</p>
+                    </td>
+                    <td><a href="{{ path('series_index') }}" class="btn btn-success">Vers la liste des séries<a></td>
+                </tr>
+                <tr class="">
+                    <th>La possibilité de naviguer dans les saisons d'une série, puis dans les épisodes</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">On peut naviguer dans les saisons d'une série puis dans ses épisodes dans la fiches d'une série</p>
+                        <p class="texte-tableau violet-t">Chaque saison et chaque épisode ont leurs notes IMDB associées</p>
+                    </td>
+                    <td><a href="{{ path('series_show', {'title': uneSerie.title}) }}" class="btn btn-success">Vers la fiche de la série "{{ uneSerie.title }}"<a></td>
+                </tr>
+                <tr class="">
+                    <th>Chaque fois que c'est pertinent on affichera le poster de la série</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Les posters des séries sont bien affichés à chaque fois que c'est pertinent</p>
+                        <p class="texte-tableau">Ils sont visible dans la liste des séries, dans la fiches d'une série, dans la liste des séries suivis, dans la liste des épisodes vu et dans la liste des commentaires</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_index') }}" class="btn btn-success">posters dans la liste des séries<a>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}#poster-fiche-serie" class="btn btn-success">Poster fiche de la série "{{ uneSerie.title }}"<a>
+                        <a href="{{ path('utilisateur-mes-series') }}" class="btn btn-success">Dans mes séries suivies<a>
+                        <a href="{{ path('utilisateur-mes-episodes-vu') }}" class="btn btn-success">Dans mes épisodes vu<a>
+                        <a href="{{ path('utilisateur-mes-notations') }}" class="btn btn-success">Dans mes retours<a>
+                        <a href="{{ path('admin_ajouter_serie') }}" class="btn btn-success">Lors de l'ajout d'une série<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>Chaque fois que c'est pertinent on affichera le trailer <em>YouTube</em></th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Le trailer est affiché dans la fiche d'une série et lors de l'ajout d'une série par un admin</p>
+                    </td>
+                    <td><a href="{{ path('series_show', {'title': uneSerie.title}) }}#trailer-yt-fiche" class="btn btn-success">Vers la fiche de la série "{{ uneSerie.title }}"<a></td>
+                </tr>
+                <tr class="">
+                    <th>Chaque fois que c'est pertinent on affichera un lien vers la fiche <em>IMDB</em> de la série ou de l'épisode
+                    </th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Le lien vers la fiche IMDB d'une  série est accessible via la page d'une série (dans le tablau des informations)</p>
+                        <p class="texte-tableau">Le lien vers la fiche IMDB d'un épisode est accessible via la page d'une série dans la liste des épisodes par saisons et aussi dans le lien vers la page de mes épisodes vu</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}#table-serie-info" class="btn btn-success">Vers la fiche de la série "{{ uneSerie.title }}"<a>
+                        <a href="{{ path('utilisateur-mes-episodes-vu') }}" class="btn btn-success">Dans mes épisodes vu<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>La possibilité pour un utilisateur de s'inscrire et de se connecter avec un suivi de session</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Fonctionnalité réalisée</p>
+                        <p class="texte-tableau">Possibilité de s'inscrire, se connecter, se déconnecter avec un suivis de sessions</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_login') }}" class="btn btn-success">Connexion<a>
+                        <a href="{{ path('app_register') }}" class="btn btn-success">Inscription<a>
+                        <a href="{{ path('app_logout') }}" class="btn btn-success">Déconnexion<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>Respect des mesures classiques de sécurité (mot de passe non stocké en clair, CAPTCHA à
+                        l'inscription...)</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Les mots de passe stockés dans la base de données sont chiffrés</p>
+                        <p class="texte-tableau">Lors de l'inscription un captcha doit être résolu</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_register') }}" class="btn btn-success">Inscription<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>En étant inscrit et connecté seulement, possibilité de noter
+                        une série, en ajoutant éventuellement un commentaire optionnel (table
+                        <kbd>rating</kbd>)</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Possibilité seulement quand un utilisateur est inscrit de poster une note avec ou sans commentaire</p>
+                        <p class="texte-tableau violet-t">Pour ne pas fosser les évaluations d'une série, l'utilisateur peut poster un seul commentaires noté sur une série</p>
+                        <p class="texte-tableau violet-t">J'ai donc aussi permis à l'utilisateur de modifier son unique commentaire par série s'il l'a déjà posté ou de supprimer son commentaire</p>
+                        <p class="texte-tableau violet-t">J'ai aussi ajouter un lien vers la liste des notes déposé par un utilisateur, pour qu'il puisse voir tous les commentaires qu'il a posté</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}#les-commentaires" class="btn btn-success">Vers la fiche de la série "{{ uneSerie.title }}"<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>En étant inscrit et connecté seulement, possibilité de classer
+                        les séries par note moyenne croissante ou décroissante (en utilisant les
+                        notes postées par les utilisateurs du site)</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Possibilité en étant connecté seulement de trier les séries par note moyenne croissantes ou décroissantes [Sélectionner trier par "note"]</p>
+                        <p class="texte-tableau violet-t">Possibilité en étant connecté seulement de trier les séries par note IMDB moyenne croissantes ou décroissantes [Sélectionner trier par "note imdb"]</p>
+                        <p class="texte-tableau violet-t">Possibilité en étant connecté seulement de trier les séries par note (IMDB et note utilisateurs) moyenne croissantes ou décroissantes [Sélectionner trier par "note moyenne generale"]</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_index') }}" class="btn btn-success">Trier dans la liste des séries<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>En étant inscrit et connecté seulement, possibilité de
+                        "suivre" des séries (à l'aide de la table <kbd>user_series</kbd>) et ces séries
+                        sont accessibles</td>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Possibilité de suivre des séries elle sont accessible sur la page "mes séries"</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}#les-commentaires" class="btn btn-success">Pour les suivre, vers la fiche de la série "{{ uneSerie.title }}" bouton suivre<a>
+                        <a href="{{ path('utilisateur-mes-series') }}" class="btn btn-success">Pour regarder les séries suivies<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>En étant inscrit et connecté seulement, possibilité de marquer
+                        un épisode comme vu ou non vu. De cette manière, l'utilisateur doit
+                        pouvoir visualiser où il en est dans le visionnage d'une série. Il est
+                        pertinent de remonter l'information dans la page "saisons"</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Possibilité marquer un épisode comme vu, il sera marqué comme vu dans la liste des saisons de la fiche d'une série et dans mes épisodes vu</p>
+                        <p class="texte-tableau">Il est à chaque fois possible de ne plus le marquer comme vu</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}" class="btn btn-success">Pour les suivre un épisode de la série "{{ uneSerie.title }}" bouton suivre<a>
+                        <a href="{{ path('utilisateur-mes-episodes-vu') }}" class="btn btn-success">Pour regarder la liste des épisodes vu<a>
+                    </td>
+                </tr>
+                <tr class="">
+                    <th>Un utilisateur administrateur doit pouvoir modérer les commentaires en les supprimant</th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Un administrateur peut modérer les commentaires en les supprimants dans la liste des commentaires sous les séries</p>
+                        <p class="texte-tableau violet-t">Une page contenant la liste de tous les commentaires du site par date croissantes a aussi été ajouter aux administrateurs pour faciliter la tache et ils peuvent les supprimer depuis cette page ou acceder à la fiche de la série</p>
+                    </td>
+                    <td>
+                        <a href="{{ path('series_show', {'title': uneSerie.title}) }}#les-commentaires" class="btn btn-success">Pour supprimer un des commentaires de la série "{{ uneSerie.title }}" bouton supprimer [en tant qu'admin]<a>
+                        <a href="{{ path('admin_voir_coms') }}" class="btn btn-success">Liste de tous les commentaires du site [Admin seulement]<a>
+                    </td>
+                </tr>
+                <tr  class="">
+                    <th>Un administrateur devrait pouvoir incorporer des nouvelles séries dans la base de données à l'aide de l'API <em>OMDB</em></th>
+                    <td></td>
+                    <td></td>
+                    <td>X</td>
+                    <td>
+                        <p class="texte-tableau">Un administrateur peut ajouter une série à la base de données en entrant l'id IMDB d'une série</p>
+                        <p class="texte-tableau">Ainsi la série sera ajoutée à la base avec ses saisons, ses épisodes, ses genres</p>
+                        <p class="texte-tableau violet-t">J'ai aussi ajouté le trailer YT non présent sur l'API OMDB en utilisant l'API YouTube et prenant le premier résultat de "titre trailer"</p>
+                        <p class="texte-tableau violet-t">Ajout de la gestion de l'empèchement d'ajout de vidéo d'autres type que "série" (exemple: Film)</p>
+                        <p class="texte-tableau violet-t">Ajout aussi l'empêchement de lancement de la recherche et intégration d'une série existant déjà dans une base de données (ainsi que IMDB invalide)</p>
+                    </td>
+                    <td>
+                        <p class="texte-tableau text-warning">Par exemple avec "tt8111088" ID IMDB de la série "The Mandalorian"</p>
+                        <a href="{{ path('admin_ajouter_serie') }}" class="btn btn-success">Page ajout séries<a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

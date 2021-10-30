@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series
+{% endblock %}
+
+{% block body %}
+
+	<div class="jumbotron">
+		<div class="container-fluid">
+			<h1 class="display-3 text-center">Liste des Séries</h1>
+			<p class="lead text-center">Rechercher les séries qui vous conviennent</p>
+			<hr class="my-4 text-center">
+			<p class="text-center">Vous pouvez suivre des séries, les commenter et les noter, vous repérer dans la vision de vos épisodes en enregistrant vos visionnages</p>
+			<p class="lead">
+				<div class="container-fluid">
+					<div class="row d-flex justify-content-center">
+						<div id="form-recherche" class="col-lg-4 col-md-3 col-sm-12 p-3 d-flex justify-content-around">
+							{{ form_start(searchForm) }}
+							<fieldset>
+								<legend>Rechercher une série</legend>
+								{{ form_row(searchForm.title) }}
+								{% if searchForm.title.vars.value != "" %}
+									<a class="btn btn-info" href="{{ path('series_index') }}">Voir toutes les séries</a>
+								{% endif %}
+
+								<fieldset class="form-group">
+									{{ form_row(searchForm.choixRecherche) }}
+								</fieldset>
+
+								{{ form_row(searchForm.rechercher) }}
+							</fieldset>
+							{{ form_end(searchForm) }}
+						</div>
+
+						<div id="form-tri" class="col-lg-4 col-md-3 col-sm-12 p-3 d-flex justify-content-around">
+							{{ form_start(sortForm) }}
+							<fieldset>
+								<legend>Trier les résultats</legend>
+								{{ form_row(sortForm.choix) }}
+								{{ form_row(sortForm.ordre) }}
+								{{ form_row(sortForm.trier) }}
+							</fieldset>
+							{{ form_end(sortForm) }}
+						</div>
+
+						<div id="form-tri" class="col-lg-4 col-md-3 col-sm-12 p-3 d-flex justify-content-around">
+							{{ form_start(genreForm) }}
+							<fieldset>
+								<legend>Sélectionner le genre</legend>
+								{{ form_row(genreForm.genre) }}
+								{{ form_row(genreForm.voir) }}
+							</fieldset>
+							{{ form_end(genreForm) }}
+						</div>
+					</div>
+				</div>
+			</p>
+		</div>
+	</div>
+
+	<div class="container text-center flex-box-page margin-b">
+		<h5>Nombre de résultats: <span class="text-warning">{{ nbSeries }} séries<span></h5>
+	</div>
+
+	<div class="container text-center flex-box-page">
+		<div>
+			<ul class="pagination">
+				<li class="page-item {% if 1 == pageActuelle %}disabled{% endif %}">
+					<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : 1, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : 1, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">&laquo;</a>
+				</li>				
+				{% for i in 1..nbPages %}
+					<li class="page-item {% if i == pageActuelle %}active{% endif %}">
+						<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : i, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : i, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">{{ i }}</a>
+					</li>
+				{% endfor %}
+				<li class="page-item {% if nbPages == pageActuelle %}disabled{% endif %}">
+					<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : nbPages, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : nbPages, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-evenly">
+			{% for s in series %}
+				{% set serie = s.series %}
+				{% set note_moy = s.note_moyenne %}
+				{% set note_moy_imdb = s.note_moyenne_imdb %}
+				{% set note_moy_gen = s.note_moyenne_generales %}
+				<div class="col-sm-6 col-md-4 col-lg-3 p-3 d-flex justify-content-center">
+					
+						<div class="container-s-min margin-bottom-minia">
+							<div class="cent-pour-cent-taille">
+								<img class="poster_list" src="{{ path('series_poster', {'id' : serie.id}) }}" alt="poster de {{ serie.title }}">
+							</div>
+							<div class="overlay-min">
+								<div class="div-s-min">
+									<p class="text-center text-warning centrer-horrizontal s-min-title">{{ serie.title }}</p>
+								</div>
+							</div>
+							{% if app.user %}
+								{% if app.user.isFollowedSeries(serie) %}
+									<div class="overlay-min-suivre">
+										<div class="div-s-min div-s-min-suivre">
+											<a class="btn btn-danger" href="{% if initiales != "" %}{{ path('series_suivre', {'add':0,'page': pageActuelle,'email': app.user.email, 'imdb': serie.imdb, 'isRecherche': 'true', 'triPar': triPar, 'triOrdre': triOrdre, 'initiales': initiales, 'leGenre': leGenre, 'choixRecherche': choixRecherche}) }}{% else %}{{ path('series_suivre', {'add':0,'page': pageActuelle,'email': app.user.email, 'imdb': serie.imdb, 'isRecherche': 'false', 'triPar': triPar, 'triOrdre': triOrdre, 'initiales': 'non', 'leGenre': leGenre}) }}{% endif %}">Ne plus suivre</a>
+										</div>
+									</div>
+								{% else %}
+									<div class="overlay-min-suivre-suivre">
+										<div class="div-s-min div-s-min-suivre">
+											<a class="btn btn-warning" href="{% if initiales != "" %}{{ path('series_suivre', {'add':1,'page': pageActuelle,'email': app.user.email, 'imdb': serie.imdb, 'isRecherche': 'true', 'triPar': triPar, 'triOrdre': triOrdre, 'initiales': initiales, 'leGenre': leGenre, 'choixRecherche': choixRecherche}) }}{% else %}{{ path('series_suivre', {'add':1,'page': pageActuelle,'email': app.user.email, 'imdb': serie.imdb, 'isRecherche': 'false', 'triPar': triPar, 'triOrdre': triOrdre, 'initiales': 'non', 'leGenre': leGenre}) }}{% endif %}">Suivre</a>
+										</div>
+									</div>
+								{% endif %}
+							{% endif %}
+							<div class="overlay-min-note">
+								<div class="div-s-min">
+									{% if triPar == 'note-imdb' %}
+										<p class="text-center text-warning centrer-horrizontal s-min-title">
+											{% if note_moy_imdb|round(2, 'floor')|length == 1 %}
+												{{ note_moy_imdb|round(2, 'floor')|replace({'0': "non noté"}) }}
+											{% else %}
+												{{ note_moy_imdb|round(2, 'floor') }}
+											{% endif %}
+										</p>
+									{% elseif triPar == 'note-moyenne-generale' %}
+										<p class="text-center text-warning centrer-horrizontal s-min-title">
+											{% if note_moy_gen|round(2, 'floor')|length == 1 %}
+												{{ note_moy_gen|round(2, 'floor')|replace({'0': "non noté"}) }}
+											{% else %}
+												{{ note_moy_gen|round(2, 'floor') }}
+											{% endif %}
+										</p>
+									{% else %}
+										<p class="text-center text-warning centrer-horrizontal s-min-title">
+											{% if note_moy|round(2, 'floor')|length == 1 %}
+												{{ note_moy|round(2, 'floor')|replace({'0': "non noté"}) }}
+											{% else %}
+												{{ note_moy|round(2, 'floor') }}
+											{% endif %}
+										</p>
+									{% endif %}
+								</div>
+							</div>
+							<div class="overlay-min-date">
+								<div class="div-s-min-date">
+									<p class="text-date-s">{{ serie.yearStart }} {% if (serie.yearEnd != "") or (serie.yearEnd != null) %}- {{ serie.yearEnd }}{% endif %}</p>
+								</div>
+							</div>
+							<a class="link-s-min" href="{{ path('series_show', {'title': serie.title}) }}">
+								<div class="overlay-min-hover centrer-horrizontal flex-center-pills">
+									<div class="cent-pour-cent-taille pos-relative flex-center-pills">
+										<div class="s-min-infs">
+											<div>
+												<p class="text-center text-warning text-titre-genre">Saisons: <span class="text-nb-genre">{{ serie.getNbSeasons() }}</span>
+												</p>
+												<p class="text-center text-warning text-titre-genre">Episodes: <span class="text-nb-genre">{{ serie.getNbEpisodes() }}</span>
+												</p>
+											</div>
+										</div>
+										<div class="s-min-genres margin-auto flex-center-pills">
+											<div class="text-center margin-auto flex-genre-center">
+												<p class="text-center text-warning text-titre-genre">Genre(s)
+												</p>
+												<div class="genre-pills">
+													{% for grs in serie.genre %}
+														<p class="badge badge-pill badge-success margin-pills">{{ grs.name }}</p>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</a>
+					</div>					
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="container text-center flex-box-page">
+		<div>
+			<ul class="pagination">
+				<li class="page-item {% if 1 == pageActuelle %}disabled{% endif %}">
+					<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : 1, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : 1, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">&laquo;</a>
+				</li>				
+				{% for i in 1..nbPages %}
+					<li class="page-item {% if i == pageActuelle %}active{% endif %}">
+						<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : i, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : i, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">{{ i }}</a>
+					</li>
+				{% endfor %}
+				<li class="page-item {% if nbPages == pageActuelle %}disabled{% endif %}">
+					<a class="page-link" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : nbPages, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : nbPages, "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="container text-center margin-b-g">
+		<a class="btn btn-warning margin-r" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : (pageActuelle-1), "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : (pageActuelle-1), "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">Précendent</a>
+		<a class="btn btn-warning" href="{% if initiales != "" %}{{ path('series_index_page_recherche', {"page" : (pageActuelle+1), "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre , "initiales": initiales, "choixRecherche": choixRecherche}) }}{% else %}{{ path('series_index_page', {"page" : (pageActuelle+1), "triPar": triPar, "triOrdre": triOrdre, "leGenre": leGenre}) }}{% endif %}">Suivant</a>
+	</div>
+
+{% endblock %}

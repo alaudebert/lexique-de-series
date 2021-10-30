@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-center">
+		<h1 class="display-3">Bienvenue sur Filou<span class="text-warning">Tube</span>
+		</h1>
+		<p class="lead">Ici vous pourrez trouver vos séries préférées !</p>
+		<hr class="my-4">
+		<p>Vous pouvez suivre des séries, les commenter et les noter, vous repérer dans la vision de vos épisodes en enregistrant vos visionnages</p>
+		<p class="lead">
+			<a class="btn btn-warning btn-lg" href="{{ path('series_index') }}" role="button">Voir les séries</a>
+			<a class="btn btn-warning btn-lg" href="{{ path('a-propos') }}" role="button">A propos</a>
+		</p>
+	</div>
+
+	<div class="container-fluid d-flex justify-content-around align-items-top">
+		<div class="row d-flex justify-content-evenly align-items-top margin-auto">
+            {% if app.user %}            
+			<div class="col-lg-4 col-md-4 col-sm-6 p-3 d-flex justify-content-around">
+				<div class="card text-white bg-dark" style="max-width: 20rem;">
+					<div class="card-header">Mes Séries</div>
+					<div class="card-body">
+						<h4 class="card-title">Liste de mes séries suivies</h4>
+						<p class="card-text">Consulter la liste des séries que vous avez suivis</p>
+                        <p class="lead text-center">
+                            <a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-series') }}" role="button">Y Aller</a>
+                        </p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-6 p-3 d-flex justify-content-around">
+				<div class="card text-white bg-dark" style="max-width: 20rem;">
+					<div class="card-header">Mes Episodes</div>
+					<div class="card-body">
+						<h4 class="card-title">Mes épisodes visionnés</h4>
+						<p class="card-text">Regarder l'avancement du visionnage de vos épisodes pour garder le fil</p>
+                        <p class="lead text-center">
+                            <a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-episodes-vu') }}" role="button">Y Aller</a>
+                        </p>
+					</div>
+				</div>
+			</div>
+            <div class="col-lg-4 col-md-4 col-sm-6 p-3 d-flex justify-content-around">
+				<div class="card text-white bg-dark" style="max-width: 20rem;">
+					<div class="card-header">Mes Notations</div>
+					<div class="card-body">
+						<h4 class="card-title">Mes notations / commentaires</h4>
+						<p class="card-text">Consulter l'historiques des notations et commentaires que vous avez posté</p>
+                        <p class="lead text-center">
+                            <a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-notations') }}" role="button">Y Aller</a>
+                        </p>
+					</div>
+				</div>
+			</div>
+            {% else %}
+
+            <div class="col-lg-6 col-md-6 col-sm-6 p-3 d-flex justify-content-around">
+				<div class="card text-white bg-dark" style="max-width: 20rem;">
+					<div class="card-header">Se Connecter</div>
+					<div class="card-body">
+						<p class="card-text">Connectez-vous pour: suivre des séries, suivre le visionnage de vos épisodes, noter des séries, laisser des commentaires, et pouvoir trier des séries par notation</p>
+                        <p class="lead text-center">
+                            <a class="btn btn-warning btn-lg" href="{{ path('app_login') }}" role="button">Y Aller</a>
+                        </p>
+					</div>
+				</div>
+			</div>
+            <div class="col-lg-6 col-md-6 col-sm-6 p-3 d-flex justify-content-around">
+				<div class="card text-white bg-dark" style="max-width: 20rem;">
+					<div class="card-header">S'inscrire</div>
+					<div class="card-body">
+						<p class="card-text">Si vous n'êtes pas encore inscrit, inscrivez-vous pour pouvoir accèder aux fonctionnalités réservées aux membres (suivi de série, suivi visionnage épisode, poste de notations et commentaires, tris par notations)</p>
+                        <p class="lead text-center">
+                            <a class="btn btn-warning btn-lg" href="{{ path('app_register') }}" role="button">Y Aller</a>
+                        </p>
+					</div>
+				</div>
+			</div>
+            {% endif %}
+		</div>
+	</div>
+{% endblock %}

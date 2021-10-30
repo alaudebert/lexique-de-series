@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout Série{% endblock %}
+
+
+{% block body %}
+
+	<div class="jumbotron">
+		<div class="container-fluid">
+			<h1 class="display-3 text-center">Ajout d'une série</h1>
+			<div class="lead text-center ">
+				Ajouter une série à la base de données
+			</div>
+			<hr class="my-4 text-center">
+			<p class="text-center">Vous pourrez ensuite voir votre série dans la liste des séries</p>
+			<p class="lead text-center">
+				<div class="container">
+					{{ form_start(imdbForm) }}
+						{{ form_row(imdbForm.imdb) }}
+						<div class="text-center">
+							{{ form_row(imdbForm.ajouter) }}
+						</div>
+					{{ form_end(imdbForm) }}
+
+					<h5>Reponse formulaire: </h5>
+					<p>Status: {{ formStatus }}</p>
+				</div>
+			</p>
+		</div>
+	</div>
+
+    
+
+	{% if not (series == null) %}
+
+		<div class="container text-center flex-box-page margin-b">
+			<h6 class="text-warning titre-ajout-serie">Serie "{{ series.title }}" ajouté à la base de données !</h6>
+		</div>
+
+		<div class="container text-center flex-box-page margin-b">
+			{% for grs in series.genre %}
+				<p class="badge badge-pill badge-warning margin-r">{{ grs.name }}</p>
+			{% endfor %}
+		</div>
+
+		<div class="container text-center flex-box-page margin-b">
+			<a class="btn btn-warning margin-r" href="{{ path('series_show', {'title': series.title}) }}">Voir la fiche de la série</a>
+			<a class="btn btn-warning" href="{{ path('series_index_page_recherche', {"page" : 1, "triPar": 'titre', "triOrdre": 'croissant', "leGenre": 'tous-les-genres', "initiales": series.title, "choixRecherche": 'commence'}) }}">Voir {{series.title}} dans la liste des séries</a>
+		</div>
+
+		<div class="container-fluid show-container">
+			<div class="show-row-1">
+				<img class="poster_list_x" src="{{ path('series_poster', {'id' : series.id}) }}" alt="poster de {{ series.title }}">
+			</div>
+			<div class="show-row-2">
+				<div class="show-infos">
+					<table class="table table-hover">
+						<thead>
+							<tr class="table-dark">
+								<th scope="col">Type</th>
+								<th scope="col">Element</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Lien vers la fiche IMDB</th>
+								<td class="text-center"><a href="https://www.imdb.com/title/{{ series.imdb }}/">🔗</a></td>
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Année de publication</th>
+								<td class="text-center">{{ series.yearStart }}</td>
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Année de fin</th>
+								{% if series.yearEnd|length == 0 %}
+									<td class="text-center">Non connue OU En cours</td>
+								{% else %}
+									<td class="text-center">{{ series.yearEnd }}</td>
+								{% endif %}
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Directeur</th>
+								{% if series.director|length == 0 %}
+									<td class="text-center">Inconnu</td>
+								{% else %}
+									<td class="text-center">{{ series.director }}</td>
+								{% endif %}
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Disctinctions</th>
+								{% if series.awards|length == 0 %}
+									<td class="text-center">Aucune</td>
+								{% else %}
+									<td class="text-center">{{ series.awards|replace({'N/A': 'Aucune'}) }}</td>
+								{% endif %}
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Pays</th>
+								<td class="text-center">
+									{% set countCtry = series.country|length %}
+									{% set cntCtry = 0 %}
+									{% for pays in series.country %}
+										{% set cntCtry = cntCtry + 1 %}
+										{{ pays }}{% if countCtry != cntCtry %}, {% endif %}
+									{% endfor %}
+
+									{% if series.country|length == 0 %} 
+										Inconnu
+									{% endif %}
+								</td>
+							</tr>
+							<tr class="table-light">
+								<th class="text-warning" scope="row">Acteurs</th>
+								<td class="text-center">
+									{% set countActor = series.actor|length %}
+									{% set cntActor = 0 %}
+									{% for acteur in series.actor %}
+										{% set cntActor = cntActor + 1 %}
+										{{ acteur }}{% if countActor != cntActor %}, {% endif %}
+									{% endfor %}
+
+									{% if countActor == 0 %} 
+										Inconnu
+									{% endif %}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid text-center trailer-margin">
+			<iframe width="550" height="300" src="{{ series.youtubeTrailer|replace({'watch?v=' : 'embed/' }) }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
+	{% endif %}
+
+{% endblock %}

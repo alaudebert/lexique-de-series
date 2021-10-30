@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Mes Episodes Vu
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-center">
+		<h1 class="display-3">Mes épisodes vus</h1>
+		<p class="lead">
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-series') }}" role="button">Mes séries</a>
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-episodes-vu') }}" role="button">Mes épisodes</a>
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-notations') }}" role="button">Mes retours</a>
+		</p>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-evenly">
+
+			{% for s in episodesVu | sort((a, b) => a.serie.title > b.serie.title) %}
+				{% set serie = s.serie %}
+				<div class="col-sm-6 col-md-4 col-lg-3 p-3 d-flex justify-content-center fbbox-epvu-container">
+					<div class="container-s-min">
+						<div class="cent-pour-cent-taille">
+							<img class="no-bd-rad poster_list" src="{{ path('series_poster', {'id' : serie.id}) }}" alt="poster de {{ serie.title }}">
+						</div>
+						<div class="no-bd-rad overlay-min">
+							<div class="div-s-min">
+								<p class="text-center text-warning centrer-horrizontal s-min-title">{{ serie.title }}</p>
+							</div>
+						</div>
+						<div class="overlay-min-note">
+							<div class="div-s-min">
+								<p class="text-center text-warning centrer-horrizontal s-min-title">
+									{% if serie.getMoyNoteUtilisateurs()|round(2, 'floor')|length == 1 %}
+										{{ serie.getMoyNoteUtilisateurs()|round(2, 'floor')|replace({'0': "non noté"}) }}
+									{% else %}
+										{{ serie.getMoyNoteUtilisateurs()|round(2, 'floor') }}
+									{% endif %}
+								</p>
+							</div>
+						</div>
+						<div class="overlay-min-date">
+							<div class="div-s-min-date">
+								<p class="text-date-s">{{ serie.yearStart }}
+									{% if (serie.yearEnd != "") or (serie.yearEnd != null) %}-
+										{{ serie.yearEnd }}
+									{% endif %}
+								</p>
+							</div>
+						</div>
+						<a class="link-s-min" href="{{ path('series_show', {'title': serie.title}) }}">
+							<div class="no-bd-rad overlay-min-hover centrer-horrizontal flex-center-pills">
+								<div class="cent-pour-cent-taille pos-relative flex-center-pills">
+									<div class="no-bd-rad s-min-infs">
+										<div>
+											<p class="text-center text-warning text-titre-genre">Saisons:
+												<span class="text-nb-genre">{{ serie.getNbSeasons() }}</span>
+											</p>
+											<p class="text-center text-warning text-titre-genre">Episodes:
+												<span class="text-nb-genre">{{ serie.getNbEpisodes() }}</span>
+											</p>
+										</div>
+									</div>
+									<div class="s-min-genres margin-auto flex-center-pills">
+										<div class="text-center margin-auto flex-genre-center">
+											<p class="text-center text-warning text-titre-genre">Genre(s)
+											</p>
+											<div class="genre-pills">
+												{% for grs in serie.genre %}
+													<p class="badge badge-pill badge-success margin-pills">{{ grs.name }}</p>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="infos-epi-saisons">
+
+
+						<div id="accordion-T">
+							<div class="card">
+								<div class="card-header" id="headingT">
+									<h5 class="mb-0">
+										<button class="btn btn-link" data-toggle="collapse" data-target="#collapseT_{{serie.id}}" aria-expanded="true" aria-controls="collapseT_{{serie.id}}">
+											Voir vos épisodes vu par saisons ▼
+										</button>
+									</h5>
+								</div>
+
+								<div id="collapseT_{{serie.id}}" class="collapse" aria-labelledby="headingT" data-parent="#accordion">
+									<div class="card-body cbdy-p-z">
+
+
+										<div id="accordion">
+											{% set int_s = 0 %}
+											{% for saison in s.saisons | sort((a, b) => a.saison.number > b.saison.number) %}
+												{% set int_s = (int_s + 1) %}
+												<div class="card bcard-t-n">
+													<div class="card-header text-center" id="headingOne">
+														<h5 class="mb-0 padding-zero">
+															<button class="btn btn-link padding-zero" data-toggle="collapse" data-target="#collapse{{saison.saison.number}}-{{serie.id}}" aria-expanded="true" aria-controls="collapse{{saison.saison.number}}-{{serie.id}}">
+																<h6 class="text-warning">Saison N°{{ saison.saison.number }}
+																	-
+																	{% if saison.saison.getMoyImdbSaison() != null %}
+																		<small class="small-saison-note">(IMDB:
+																			{{ saison.saison.getMoyImdbSaison()|round(2, 'floor') }})</small>
+																	{% endif %}
+																	▼
+																</h6>
+															</button>
+														</h5>
+													</div>
+
+													<div id="collapse{{saison.saison.number}}-{{serie.id}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+														<div class="card-body">
+															<ul class="ul-s-mp-zero">
+																{% for episode in saison.episodes | sort %}
+																	<div class="margin-b-new">
+																		<p class="no-margin-padding p-bold fs-p-epi-card">-Episode N°{{ episode.num }}:
+																			{{ episode.titre }}
+																			{% if app.user %}
+																				{% if app.user.isFollowedEpisode(episode.episode) %}
+																					<span class="badge badge-pill badge-success margin-r">VU</span>
+																				{% endif %}
+																			{% endif %}
+																		</p>
+																		<div class="episode-flex alinea-2">
+																			<a class="btn btn-warning margin-r btn-mnv-manager" href="https://www.imdb.com/title/{{ episode.episode.imdb }}">Fiche IMDB 🔗</a>
+																			{% if app.user %}
+																				<a class="btn btn-danger btn-mnv-manager" href="{{ path('series_suivre_episode_utilisateur', {'id': episode.episode.id, 'add':0}) }}">Enlever</a>
+																			{% endif %}
+																		</div>
+																	</div>
+																{% endfor %}
+															</ul>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+
+{% endblock %}

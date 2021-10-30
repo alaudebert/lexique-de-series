@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modération commentaires{% endblock %}
+
+
+{% block body %}
+
+	<div class="jumbotron">
+		<div class="container-fluid">
+			<h1 class="display-3 text-center">Modération des commentaires</h1>
+			<div class="lead text-center ">
+				Tous les commentaires seront visibles sur cette page
+			</div>
+			<hr class="my-4 text-center">
+			<p class="text-center">Vous pouvez modérer tous les commentaires de chaques séries. les commentaires sont classés par dates la plus récente</p>
+			<p class="lead text-center">
+				<a class="btn btn-warning btn-lg" href="{{ path('admin_ajouter_serie') }}" role="button">Ajouter une série</a>
+			</p>
+		</div>
+	</div>
+    
+	<div class="container">
+		<div class="row d-flex justify-content-evenly align-items-top margin-auto">
+			{% for commentaire in notations | sort((a, b) => a.date < b.date)%}
+				{% if commentaire != null and commentaire.comment != null and commentaire.comment != "" %}
+					<div class="col-lg-4 col-md-4 col-sm-6 p-3 d-flex justify-content-around">
+						<div class="card text-white bg-secondary mb-3 width-com" style="max-width: 20rem;">
+							<div class="card-header">
+								<span class="com-nom-u">{{ commentaire.user }}</span>
+								<span class="com-divider-u text-warning">—</span>
+								(<span class="com-date-u">{{ commentaire.getDateToString() }}</span>)</div>
+							<div class="card-header text-center div-spe-nop center-the-p-row">
+								<div class="taille-img-p p-rel-fr">
+									<div class="cent-pour-cent-taille">
+										<img class="poster_list_comment" src="{{ path('series_poster', {'id' : commentaire.series.id}) }}" alt="poster de {{ commentaire.series.title }}">
+									</div>
+									<div class="overlay-min">
+										<div class="div-s-min">
+											<p class="text-center text-warning centrer-horrizontal s-min-title">{{ commentaire.series.title }}</p>
+										</div>
+									</div>
+									<div class="overlay-min-note">
+										<div class="div-s-min">
+											<p class="text-center text-warning centrer-horrizontal s-min-title">
+												{% if commentaire.series.getMoyNoteUtilisateurs()|round(2, 'floor')|length == 1 %}
+													{{ commentaire.series.getMoyNoteUtilisateurs()|round(2, 'floor')|replace({'0': "non noté"}) }}
+												{% else %}
+													{{ commentaire.series.getMoyNoteUtilisateurs()|round(2, 'floor') }}
+												{% endif %}
+											</p>
+										</div>
+									</div>
+									<div class="overlay-min-date">
+										<div class="div-s-min-date">
+											<p class="text-date-s">{{ commentaire.series.yearStart }}
+												{% if (commentaire.series.yearEnd != "") or (commentaire.series.yearEnd != null) %}-{{ commentaire.series.yearEnd }}
+												{% endif %}
+											</p>
+										</div>
+									</div>
+									<a class="link-s-min" href="{{ path('series_show', {'title': commentaire.series.title}) }}">
+										<div class="overlay-min-hover centrer-horrizontal flex-center-pills">
+											<div class="cent-pour-cent-taille pos-relative flex-center-pills">
+												<div class="s-min-infs">
+													<div>
+														<p class="text-center text-warning text-titre-genre">Saisons:
+															<span class="text-nb-genre">{{ commentaire.series.getNbSeasons() }}</span>
+														</p>
+														<p class="text-center text-warning text-titre-genre">Episodes:
+															<span class="text-nb-genre">{{ commentaire.series.getNbEpisodes() }}</span>
+														</p>
+													</div>
+												</div>
+												<div class="s-min-genres margin-auto flex-center-pills">
+													<div class="text-center margin-auto flex-genre-center">
+														<p class="text-center text-warning text-titre-genre">Genre(s)
+														</p>
+														<div class="genre-pills">
+															{% for grs in commentaire.series.genre %}
+																<p class="badge badge-pill badge-success margin-pills">{{ grs.name }}</p>
+															{% endfor %}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div class="card-body">
+								<h5 class="card-title text-warning">{{ commentaire.value }}/10</h5>
+								<p class="card-text">{{ commentaire.comment }}</p>
+								<div class="d-flex flex-row-reverse">
+									<a class="btn btn-danger" href="{{ path('series_supp_commentaire', {'id': commentaire.id, 'titre': 'na', 'self': 'moderation', 'isMyRatings': 'true'}) }}">Supprimer</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+
+
+{% endblock %}

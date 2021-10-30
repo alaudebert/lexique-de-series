@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Séries
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron text-center">
+		<h1 class="display-3">Mes séries</h1>
+		<p class="lead">
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-series') }}" role="button">Mes séries</a>
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-episodes-vu') }}" role="button">Mes épisodes</a>
+			<a class="btn btn-warning btn-lg" href="{{ path('utilisateur-mes-notations') }}" role="button">Mes retours</a>
+		</p>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-evenly">
+			{% for serie in app.user.series %}
+				<div class="col-sm-6 col-md-4 col-lg-3 p-3 d-flex justify-content-center margin-bottom-minia">
+
+					<div class="container-s-min">
+						<div class="cent-pour-cent-taille">
+							<img class="poster_list" src="{{ path('series_poster', {'id' : serie.id}) }}" alt="poster de {{ serie.title }}">
+						</div>
+						<div class="overlay-min">
+							<div class="div-s-min">
+								<p class="text-center text-warning centrer-horrizontal s-min-title">{{ serie.title }}</p>
+							</div>
+						</div>
+						<div class="overlay-min-suivre">
+							<div class="div-s-min div-s-min-suivre">
+								<a class="btn btn-danger" href="{{ path('series_suivre', {'add':0,'page': 0,'email': app.user.email,'imdb': serie.imdb, 'isRecherche': 'false', 'triPar': 'na', 'triOrdre': 'na', 'initiales': 'na', 'leGenre' : 'na', 'choixRecherche': 'na', 'route_from': 'utilisateur-mes-series'}) }}">Ne plus suivre</a>
+							</div>
+						</div>
+						<div class="overlay-min-note">
+							<div class="div-s-min">
+								<p class="text-center text-warning centrer-horrizontal s-min-title">
+									{% if serie.getMoyNoteUtilisateurs()|round(2, 'floor')|length == 1 %}
+										{{ serie.getMoyNoteUtilisateurs()|round(2, 'floor')|replace({'0': "non noté"}) }}
+									{% else %}
+										{{ serie.getMoyNoteUtilisateurs()|round(2, 'floor') }}
+									{% endif %}
+								</p>
+							</div>
+						</div>
+						<div class="overlay-min-date">
+							<div class="div-s-min-date">
+								<p class="text-date-s">{{ serie.yearStart }}
+									{% if (serie.yearEnd != "") or (serie.yearEnd != null) %}-
+										{{ serie.yearEnd }}
+									{% endif %}
+								</p>
+							</div>
+						</div>
+						<a class="link-s-min" href="{{ path('series_show', {'title': serie.title}) }}">
+							<div class="overlay-min-hover centrer-horrizontal flex-center-pills">
+								<div class="cent-pour-cent-taille pos-relative flex-center-pills">
+									<div class="s-min-infs">
+										<div>
+											<p class="text-center text-warning text-titre-genre">Saisons:
+												<span class="text-nb-genre">{{ serie.getNbSeasons() }}</span>
+											</p>
+											<p class="text-center text-warning text-titre-genre">Episodes:
+												<span class="text-nb-genre">{{ serie.getNbEpisodes() }}</span>
+											</p>
+										</div>
+									</div>
+									<div class="s-min-genres margin-auto flex-center-pills">
+										<div class="text-center margin-auto flex-genre-center">
+											<p class="text-center text-warning text-titre-genre">Genre(s)
+											</p>
+											<div class="genre-pills">
+												{% for grs in serie.genre %}
+													<p class="badge badge-pill badge-success margin-pills">{{ grs.name }}</p>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

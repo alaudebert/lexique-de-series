@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series
+{% endblock %}
+
+{% block body %}
+	<div class="jumbotron pos-relative">
+		<div class="container-fluid">
+			<h1 class="display-3 text-center">{{ series.title }}</h1>
+			<div class="lead text-center ">
+				{% for grs in series.genre %}
+					<p class="badge badge-pill badge-warning">{{ grs.name }}</p>
+				{% endfor %}
+			</div>
+			<hr class="my-4 text-center">
+			<p class="text-center">{{ series.plot }}</p>
+			<p class="lead text-center">
+				{% if app.user %}
+					{% if app.user.isFollowedSeries(series) %}
+						<a class="btn btn-danger p-bold" href="{{ path('series_suivre', {'add':0,'page': 0,'email': app.user.email,'imdb': series.imdb, 'isRecherche': 'false'}) }}">Ne plus suivre</a>
+					{% else %}
+						<a class="btn btn-warning p-bold" href="{{ path('series_suivre', {'add':1,'page': 0,'email': app.user.email,'imdb': series.imdb, 'isRecherche': 'false'}) }}">Suivre</a>
+					{% endif %}
+				{% endif %}
+			</p>
+		</div>
+
+		<div class="overlay-note-titre-s">
+			<div class="note-titre-s">
+				<p class="no-margin-padding note-titre-note">Note</p>
+				<div class="c-note-titre-s">
+				{% if app.user %}
+					<div class="bbox-note-titre-s text-center margin-all-eq">
+						<p class="no-margin-padding note-titre-src">IMDB</p>
+						<p class="note-titre-value">
+							{% if series.getMoyImdbSerie() |round(2, 'floor')|length == 1 %}
+								{{ series.getMoyImdbSerie() |round(2, 'floor')|replace({'0': "non noté"}) }}
+							{% else %}
+								{{ series.getMoyImdbSerie() |round(2, 'floor') }}
+							{% endif %}
+						</p>
+					</div>
+					<div class="bbox-note-titre-s text-center margin-all-eq">
+						<p class="no-margin-padding note-titre-src">Membre</p>
+						<p class="note-titre-value">
+							{% if series.getMoyNoteUtilisateurs() |round(2, 'floor')|length == 1 %}
+								{{ series.getMoyNoteUtilisateurs() |round(2, 'floor')|replace({'0': "non noté"}) }}
+							{% else %}
+								{{ series.getMoyNoteUtilisateurs() |round(2, 'floor') }}
+							{% endif %}
+						</p>
+					</div>
+					<div class="bbox-note-titre-s text-center margin-all-eq">
+						<p class="no-margin-padding note-titre-src">Moyenne</p>
+						<p class="note-titre-value">
+							{% if series.getNoteMoyGenerale() |round(2, 'floor')|length == 1 %}
+								{{ series.getNoteMoyGenerale() |round(2, 'floor')|replace({'0': "non noté"}) }}
+							{% else %}
+								{{ series.getNoteMoyGenerale() |round(2, 'floor') }}
+							{% endif %}
+						</p>
+					</div>
+				{% else %}
+						<a class="margin-auto" href="{{ path('app_login') }}"><p class="margin-auto note-titre-src text-center">Connectez-vous pour voir les notes</p></a>
+				{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid show-container margin-top-5">
+		<div class="show-row-1">
+			<img id="poster-fiche-serie" class="poster_list_x" src="{{ path('series_poster', {'id' : series.id}) }}" alt="poster de {{ series.title }}">
+		</div>
+		<div class="show-row-2">
+			<div id="table-serie-info" class="show-infos">
+				<table class="table table-hover">
+					<thead>
+						<tr class="table-dark">
+							<th scope="col">Type</th>
+							<th scope="col">Element</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Lien vers la fiche IMDB</th>
+							<td class="text-center">
+								<a href="https://www.imdb.com/title/{{ series.imdb }}/">🔗</a>
+							</td>
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Année de publication</th>
+							<td class="text-center">{{ series.yearStart }}</td>
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Année de fin</th>
+							{% if series.yearEnd|length == 0 %}
+								<td class="text-center">Non connue OU En cours</td>
+							{% else %}
+								<td class="text-center">{{ series.yearEnd }}</td>
+							{% endif %}
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Directeur</th>
+							{% if series.director|length == 0 %}
+								<td class="text-center">Inconnu</td>
+							{% else %}
+								<td class="text-center">{{ series.director }}</td>
+							{% endif %}
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Distinctions</th>
+							{% if series.awards|length == 0 %}
+								<td class="text-center">Aucune</td>
+							{% else %}
+								<td class="text-center">{{ series.awards|replace({'N/A': 'Aucune'}) }}</td>
+							{% endif %}
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Pays</th>
+							<td class="text-center">
+								{% set countCtry = series.country|length %}
+								{% set cntCtry = 0 %}
+								{% for pays in series.country %}
+									{% set cntCtry = cntCtry + 1 %}
+									{{ pays }}{% if countCtry != cntCtry %}, {% endif %}
+								{% endfor %}
+
+								{% if series.country|length == 0 %} 
+									Inconnu
+								{% endif %}
+							</td>
+						</tr>
+						<tr class="table-light">
+							<th class="text-warning" scope="row">Acteurs</th>
+							<td class="text-center">
+								{% set countActor = series.actor|length %}
+								{% set cntActor = 0 %}
+								{% for acteur in series.actor %}
+									{% set cntActor = cntActor + 1 %}
+									{{ acteur }}{% if countActor != cntActor %}, {% endif %}
+								{% endfor %}
+
+								{% if countActor == 0 %} 
+									Inconnu
+								{% endif %}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div id="trailer-yt-fiche" class="container-fluid text-center trailer-margin">
+		<iframe width="550" height="300" src="{{ series.youtubeTrailer|replace({'watch?v=' : 'embed/' }) }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+
+	{# saisons ici #}
+
+	<div class="container">
+		<div id="accordion">
+			{% set int_s = 0 %}
+			{% for saison in series.seasons %}
+			{% set int_s = (int_s + 1) %}
+			<div class="card">
+				<div class="card-header" id="headingOne">
+					<h5 class="mb-0">
+						<button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{saison.number}}" aria-expanded="true" aria-controls="collapse{{saison.number}}">
+							<h5 class="text-warning">Saison N°{{ saison.number }} - {% if saison.getMoyImdbSaison() != null %}<small class="small-saison-note">(IMDB: {{ saison.getMoyImdbSaison()|round(2, 'floor') }})</small>{% endif %} <small>▼</small></h5>
+						</button>
+					</h5>
+				</div>
+
+				<div id="collapse{{saison.number}}" class="collapse {% if int_s == 1 %}show{% endif %}" aria-labelledby="headingOne" data-parent="#accordion">
+					<div class="card-body">
+						<ul>
+							{% for episode in saison.episodes %}
+								<div class="margin-b">
+									<p class="no-margin-padding p-bold">Episode N°{{ episode.number }}:
+										{{ episode.title }} - <small class="small-saison-note">(IMDB: {{ episode.imdbRating|round(2, 'floor') }})</small>
+										{% if app.user %}
+											{% if app.user.isFollowedEpisode(episode) %}
+												<span class="badge badge-pill badge-success margin-r">VU</span>
+											{% endif %}
+										{% endif %}
+									</p>
+									<div class="episode-flex alinea">
+										<a class="btn btn-warning margin-r" href="https://www.imdb.com/title/{{ episode.imdb }}">Fiche IMDB de l'épisode 🔗</a>
+										{% if app.user %}
+											{% if app.user.isFollowedEpisode(episode) %}
+												<a class="btn btn-danger" href="{{ path('series_suivre_episode_utilisateur', {'id': episode.id, 'add':0, 'title': series.title}) }}">Ne plus marquer comme vu</a>
+											{% else %}
+												<a class="btn btn-warning" href="{{ path('series_suivre_episode_utilisateur', {'id': episode.id, 'add':1, 'title': series.title}) }}">Marquer comme vu</a>
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{% if app.user %}
+		<div class="container text-center flex-box-page margin-b margin-t-c">
+			<div class="commentaire-container">
+				{% if series.userHasComment(app.user) %}
+					<h4>Modifier ma note</h4>
+				{% else %}
+					<h4>Ajouter une note</h4>
+				{% endif %}
+
+				{{ form_start(ratingForm) }}
+				{{ form_row(ratingForm.note) }}
+				{{ form_row(ratingForm.commentaire) }}
+				{{ form_row(ratingForm.ajouter) }}
+				{{ form_end(ratingForm) }}
+
+				{% if series.userHasComment(app.user) %}
+					<a class="btn btn-danger" href="{{ path('series_supp_commentaire', {'id': app.user.getRatingBySeries(series).id, 'titre': series.title, 'self': true}) }}">Supprimer</a>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+
+	<div id="les-commentaires" class="container text-center flex-box-page m-com-t">
+		<h4>Les commentaires</h4>
+	</div>
+
+	<div class="container text-center flex-box-page m-com-a">
+		<p>{{ series.getNbNote() }}
+			notes (dont
+			{{ series.getNbNoteCommentee() }}
+			commentées)</p>
+	</div>
+
+	<div class="container">
+		<div class="row d-flex justify-content-evenly align-items-top margin-auto">
+			{% for commentaire in series.ratings | sort((a, b) => a.date < b.date)%}
+				{% if commentaire != null and commentaire.comment != null and commentaire.comment != "" %}
+					<div class="col-lg-4 col-md-4 col-sm-6 p-3 d-flex justify-content-around">
+						<div class="card text-white bg-secondary mb-3 width-com" style="max-width: 20rem;">
+							<div class="card-header">
+								<span class="com-nom-u">{{ commentaire.user }}</span>
+								<span class="com-divider-u text-warning">—</span>
+								(<span class="com-date-u">{{ commentaire.getDateToString() }}</span>)</div>
+							<div class="card-body">
+								<h5 class="card-title text-warning">{{ commentaire.value }}/10</h5>
+								<p class="card-text">{{ commentaire.comment }}</p>
+								{% if app.user %}
+									{% if app.user.admin %}
+										<div class="d-flex flex-row-reverse">
+											<a class="btn btn-danger" href="{{ path('series_supp_commentaire', {'id': commentaire.id, 'titre': series.title, 'self': true, 'isMyRatings': 'false'}) }}">Supprimer</a>
+										</div>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="container text-center margin-b-g">
+		<a class="btn btn-warning" href="{{ path('series_index') }}">Retourner à la liste des séries</a>
+	</div>
+
+{% endblock %}

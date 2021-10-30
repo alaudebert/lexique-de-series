@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}FilouTube
+			{% endblock %}
+		</title>
+		<link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('style/main.css') }}"> {% block stylesheets %}{% endblock %}
+		</head>
+		<body>
+			<header>
+				<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+					<a class="navbar-brand" href="{{ path('home') }}">Filou<span class="text-warning">Tube</span>
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarColor01">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item {% if app.request.attributes.get('_route') == 'home' %}active{% endif %}">
+								<a class="nav-link" href="{{ path('home') }}">Accueil</a>
+							</li>
+							<li class="nav-item {% if app.request.attributes.get('_route') == 'series_index_page' %}active{% endif %}">
+								<a class="nav-link" href="{{ path('series_index') }}">Séries</a>
+							</li>
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'a-propos' %}active{% endif %}">
+								<a class="nav-link" href="{{ path('a-propos') }}">à propos</a>
+							</li>	
+							{% if app.user %}{% if app.user.admin %}							
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle active color-red-admin" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+									<div class="dropdown-menu couleur-d-s">
+										<a class="dropdown-item" href="{{ path('admin_ajouter_serie') }}">Ajouter une série</a>														
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="{{ path('admin_voir_coms') }}">Modérer les commentaires</a>	
+									</div>
+								</li>
+							{% endif %}{% endif %}					
+						</ul>
+						<ul class="navbar-nav ml-auto">
+							{% if app.user %}
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
+									<div class="dropdown-menu dropdown-menu-right couleur-d-s">
+										<a class="dropdown-item" href="{{ path('utilisateur-mes-series') }}">Mes séries</a>
+										<a class="dropdown-item" href="{{ path('utilisateur-mes-episodes-vu') }}">Mes Episodes Vu</a>
+										<a class="dropdown-item" href="{{ path('utilisateur-mes-notations') }}">Mes Retours</a>										
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+									</div>
+								</li>
+							{% else %}
+								<li class="nav-item {% if app.request.attributes.get('_route') == 'app_login' %}active{% endif %}">
+									<a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+								</li>
+								<li class="nav-item {% if app.request.attributes.get('_route') == 'app_register' %}active{% endif %}">
+									<a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+								</li>
+							{% endif %}
+						</ul>
+					</div>
+				</nav>
+			</header>
+			<h1>
+				{% block titre %}{% endblock %}
+			</h1>
+			{% block body %}{% endblock %}
+			{% block javascripts %}{% endblock %}
+			<script src="{{ asset('bootstrap/js/jquery-3.5.1.slim.min.js') }}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+			<script src="{{ asset('bootstrap/js/popper.min.js') }}" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+			<script src="{{ asset('bootstrap/js/bootstrap.min.js') }}" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+		</body>
+	</html>
